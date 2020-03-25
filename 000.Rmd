@@ -42,6 +42,31 @@ num2Vector<-c(5L,6L,7L)
 char1<-"你好"
 char2<-'你好'
 ```
+```{r}
+HeSaid<-'他說:"今天多了一個確診。"'
+```
+```{r}
+library(httr)
+library(dplyr)
+GET("https://api.github.com/repos/tpemartin/108-2-56-inclass-practice/commits") %>%
+  content() %>%
+  View()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
