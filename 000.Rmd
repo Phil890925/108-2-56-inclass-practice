@@ -65,8 +65,19 @@ listExample<-list(2,6,7)
 print(vectorExample)
 print(listExample)
 ```
+```{r}
+#用vector儲存
+c("2020-03-31T13:40:55Z","一芳","2杯","水果茶")
 
-
+#用list儲存
+library(lubridate)
+list(
+  ymd_hms("2020-03-31T13:40:55Z"),#Date/Time
+  "一芳",#Character
+  2,#Numeric
+  "水果茶"#Character
+  )
+```
 
 
 
