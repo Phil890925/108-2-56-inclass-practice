@@ -1,0 +1,803 @@
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+listExample[["student"]]
+listExample$student
+
+listExample[["學期"]]  # 小心不是反頓點喔。
+listExample$學期
+```
+```{r}
+vectorExample
+vectorExample[c(1, 3)]
+```
+```{r}
+# 顯示到第一層
+str(listExample, max.level = 1)
+
+listExample[c(1, 2)]
+```
+```{r}
+# 顯示到第一層
+str(listExample, max.level = 1)
+
+listExample[c("學期")]
+listExample[c("student", "學期")]
+```
+```{r}
+vectorExample
+vectorExample[c(T, T, F)]  # 要，要，不要
+```
+```{r}
+str(listExample[c(F, T)])  # 不要，要
+str(listExample[c(T, T)])  # 要，要
+```
+```{r}
+str(listExample)
+```
+```{r}
+get1 <- listExample[["學期"]]
+get2 <- listExample["學期"]
+```
+```{r}
+get1  # 學期拿出來，有3個元素的list
+str(get1)
+```
+```{r}
+get2  # listExample 只留下 學期元素，是個只有一個元素的list
+str(get2)
+```
+```{r}
+numVector <- c(2, 3, 6, -1, 4, 2, 6)
+select1 <- numVector[c(1, 4)]
+select1
+select2 <- select1[[1]]
+select2
+
+# 相當於
+numVector[c(1, 4)][[1]]
+```
+```{r}
+select1 <- numVector[c(T, T, F, T, F, F, T)]
+select1
+select2 <- select1[c(1, 4)]
+select2
+
+# 相當於
+numVector[c(T, T, F, T, F, F, T)][c(1, 4)]
+```
+```{r}
+majors <- c("經濟學系", "經濟學系", "社會學系", "社工系", "經濟學系")
+names <- c("小英", "小美", "大雄", "阿華", "阿尼")
+gender <- c("F", "F", "M", "F", "M")
+```
+```{r}
+today <- list(list("台北市", c(highest_temp = 25), c(lowest_temp = 18)), list("新北市", 
+    c(highest_temp = 24), c(lowest_temp = 15)))
+tomorrow <- list(list("台北市", c(highest_temp = 25), c(lowest_temp = 18)), list("新北市", 
+    c(highest_temp = 24), c(lowest_temp = 15)))
+
+weather <- list(today, tomorrow)
+
+print(weather)
+```
+```{r}
+weather[[1]][[2]][[2]]  # 今天/新北市/highest_temp
+weather[[2]][[2]][[2]]  # 明天/新北市/highest_temp
+```
+```{r}
+obj[.] <- value
+obj[[.]] <- value
+obj$. <- value
+```
+```{r}
+a <- c("1", "b", "TRUE")
+a
+a[[2]] <- "c"  # 元素存在: 替換
+a[[4]] <- "7"  # 元素不存在： 增加
+a[c(5, 6)] <- c("J", "K")
+a
+```
+```{r}
+library(lubridate)
+list1 <- list(list(name = "Jack", birthday = ymd("1998-03-21"), status = c(height = 177, 
+    weight = 80)))
+
+str(list1)
+```
+```{r}
+# 更改日期
+list1[[1]]$birthday <- ymd("1997-03-21")
+
+# 新增資料
+list1[[2]] <- list(name = "Mary", birthday = ymd("1998-08-24"))
+
+str(list1)
+```
+```{r}
+list1[[1]][["age"]] <- 21
+list1[[2]]["age"] <- list(21)
+
+# 改變「一個」時，使用[[ ]]比較不會錯。
+str(list1)
+```
+```{r}
+list1[[1]][c("bloodType", "registered")] <- list("AB", TRUE)
+
+str(list1)
+```
+```{r}
+print(a)
+a[-c(1, 3)]
+a[c(-2)]
+
+print(a)
+a  # 要回存才算真的刪除
+ <- a[-c(1, 3)]
+```
+```{r}
+str(list1)
+list1[[2]][c(1, 2)] <- NULL
+str(list1)
+```
+```{r}
+library(jsonlite)
+newTaipeiYouBike <- fromJSON("https://data.ntpc.gov.tw/api/datasets/71CD1490-A2DF-4198-BEF1-318479775E8A/json", 
+    simplifyDataFrame = F)
+```
+```{r}
+a <- c(2, 3, 5)
+b <- c(4, -1, 3)
+a + b
+a - b
+a * b
+a/b
+```
+```{r}
+a%%b
+# 相當於
+c(2%%4, 3%%(-1), 5%%3)
+
+a^b
+```
+```{r}
+sequenceNums <- c(11, 6, 8, 11, 12, 11, 3, 7, 10, 8)
+print(sequenceNums)
+
+sequenceNums%%2  # 餘數為1則是奇數，0則是偶數
+```
+```{r}
+# a+b 即等於
+c(2 + 4, 3 + (-1), 5 + 3)
+# a**b 即等於
+c(2^4, 3^(-1), 5^3)
+```
+```{r}
+5 * c(1, 3, 4) + 7
+# 其實是
+c(5) * c(1, 3, 4) + c(7)
+
+## 對向量5，向量7進行recycle:
+c(5, 5, 5) * c(1, 3, 4) + c(7, 7, 7)
+## Recycle等長後才進行elementwise operation:
+c(5 * 1 + 7, 5 * 3 + 7, 5 * 4 + 7)
+```
+```{r}
+# 狀況一: 堆疊一定倍數剛好一樣長
+c(2, 3)/c(-2, -13, 10, 22)
+c(2, 3, 2, 3)/c(-2, -13, 10, 22)
+```
+```{r}
+# 狀況二: 倍數堆疊一定會超過，只好截斷
+c(2, 3)/c(-2, -13, 10)
+c(2, 3, 2)/c(-2, -13, 10)
+```
+```{r}
+paste0(c("我叫"), c("小明", "小美"))
+paste0(c("我叫", "我叫"), c("小明", "小美"))
+paste0(c("他叫", "我叫"), c("小明", "小美", "大雄"))
+```
+```{r}
+example <- list(name = c("小明", "小花", "小新", "美美"), height = c(175, 
+    166, 170, 160), weight = c(77, NA, 60, 43), birthday = lubridate::ymd(c("1998-03-11", 
+    "1999-12-22", "1995-08-22", "2001-10-10")), hobby = c("美食 旅遊", "旅遊 時尚", 
+    "3C 美食", "音樂 旅遊"), residence = c("Taipei", "New Taipei", "Taichung", 
+    "Kaohsiung"), allowance = factor(c("0-1000", "1001-2000", "2000+", "1001-2000")), 
+    bloodType = c("A", "B", "B", "O"))
+```
+```{r}
+example$name[c(T, F, T, F)]
+```
+```{r}
+str(example[c("name", "height")])
+
+pick_above170 <- example$height >= 170
+example$height
+c(175, 166, 170, 160) >= 170
+
+example$name[pick_above170]
+```
+```{r}
+source("https://www.dropbox.com/s/qsrw069n94k61lj/transcript100to103_list.R?dl=1")
+```
+```{r}
+str(transcript100to103)
+```
+```{r}
+# 各學屆2年級人數
+table(transcript100to103$學屆)
+# 各學屆2年級成績大於85年數
+table(transcript100to103$學屆[pick_above85])
+```
+```{r}
+example$birthday
+class(example$birthday)
+typeof(example$birthday)
+```
+```{r}
+print(example[c("name", "birthday")])
+
+pick_after98 <- example$birthday >= lubridate::ymd("1998-01-01")
+example$name[pick_after98]
+```
+```{r}
+str(example)
+pick_above170 <- example$height >= 170
+pick_bloodB <- example$bloodType == "B"
+pick_loveFood <- stringr::str_detect(example$hobby, "美食")
+pick_na <- is.na(example$weight)
+pick_after98 <- example$birthday >= lubridate::ymd("1998-01-01")
+set_TaipeiMetro <- c("Taipei", "New Taipei")
+pick_fromTaipeiMetro <- example$residence %in% set_TaipeiMetro
+```
+```{r}
+str(example[c("name", "hobby", "bloodType")])
+
+example$name[pick_loveFood & pick_bloodB]
+```
+```{r}
+example[c("name", "birthday", "residence")]
+
+example$name[pick_after98 | !pick_fromTaipeiMetro]
+```
+```{r}
+char1 <- c("Wild", "Apple", "Donald", "May", "Avocada")
+factor1 <- factor(char1)
+levels(factor1)
+```
+```{r}
+char2 <- c("蔡英文", "習近平", "Donald Trump", "蔡頭")
+factor2 <- factor(char2)
+levels(factor2)
+
+sort(str_sub(char2, 1, 1))
+sort(str_sub(char2, 2, 2))
+```
+```{r}
+covid19 <- jsonlite::fromJSON("https://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.json")
+```
+```{r}
+# 不可排序類別：性別、縣市、是否境外移入
+covid19$縣市 <- factor(covid19$縣市)
+covid19$性別 <- factor(covid19$性別)
+covid19$是否為境外移入 <- factor(covid19$是否為境外移入)
+```
+```{r}
+# 可排序類別資料：年齡層
+covid19$年齡層 <- factor(covid19$年齡層, ordered = TRUE)
+levels(covid19$縣市)
+levels(covid19$性別)
+levels(covid19$是否為境外移入)
+covid19$年齡層
+levels(covid19$年齡層)
+```
+```{r}
+population <- jsonlite::fromJSON("https://www.dropbox.com/s/jckqryeh5zeat5w/regionPopulation.json?dl=1")
+population <- unlist(population)
+```
+```{r}
+print(population)
+class(population)  # 判斷出是named integer vector
+names(population)  # 元素名稱是台灣各縣市
+```
+```{r}
+levels(covid19$`縣市`)  # 是名稱字串向量
+
+# 由於population元素值有names，可以用`[名稱字串向量]`取出所要的
+levelsInData <- levels(covid19$`縣市`)
+population <- population[levelsInData]
+```
+```{r}
+population <- sort(population, decreasing = T)
+population
+```
+```{r}
+newLevels <- names(population)
+newLevels
+```
+```{r}
+covid19$`縣市` <- factor(covid19$`縣市`, levels = newLevels)
+
+levels(covid19$`縣市`)
+```
+```{r}
+factor2 <- factor(c("好", "好", "普通", "普通", "好"))
+levels(factor2)
+```
+```{r}
+factor2[[6]] <- "差"
+factor2  # 元素6變NA
+```
+```{r}
+factor2 <- factor(c("好", "好", "普通", "普通", "好"))
+levels(factor2)
+
+# 先擴大levels
+levels(factor2) <- c(levels(factor2), "差")
+levels(factor2)
+factor2[[6]] <- "差"
+factor2
+```
+```{r}
+pick_小新<- example$`name` == "小新"
+data_selected <- list(name = example$name[pick_小新], weight = example$weight[pick_小新], 
+    height = example$height[pick_小新], hobby = example$hobby[pick_小新], residence = example$residence[pick_小新], 
+    allowance = example$allowance[pick_小新], bloodType = example$bloodType[pick_小新])
+```
+```{r}
+example[[1]][pick_小新]
+example[[2]][pick_小新]
+example[[3]][pick_小新]
+example[[4]][pick_小新]
+example[[5]][pick_小新]
+example[[6]][pick_小新]
+example[[7]][pick_小新]
+```
+```{r}
+threeHeigths <- c(Gary=178, John=182, Cam=175)
+```
+```{r}
+# 先排序由大到小，
+sort(threeHeigths, decreasing=T) -> sorted_heights
+
+# 把排好的人名取出
+names(sorted_heights) -> sorted_persons
+
+# 接著取出第一個位置的人名
+sorted_persons[[1]] -> highestPerson
+```
+```{r}
+f(w) -> x
+g(x) -> y
+h(y) -> z
+```
+```{r}
+f(w) %>%
+  g(.) %>% 
+  h(.) -> z
+```
+```{r}
+w %>%
+  f(.) %>%
+  g(.) %>%
+  h(.) -> z
+```
+```{r}
+num <- c(2,97,22,15,7)
+
+# 選出大於50的數字
+(num > 50) -> pick_big
+num[pick_big]
+```
+```{r}
+(num > 50) %>%
+  num[.]
+```
+```{r}
+threeHeights %>%
+  .sort(., decreasing=T) %>%
+  names(.) %>%
+  .[[1]] -> highestPerson
+```
+```{r}
+levels(region) %>%
+  str_replace(.,"台北","北部") %>%
+  str_replace(.,"花蓮|台東","東部") %>%
+  str_replace(.,"台中","中部") ->
+  levels(region)
+```
+```{r}
+levels(region) %>% 
+  str_replace("台北","北部") %>%
+  str_replace("花蓮|台東","東部") %>%
+  str_replace("台中","中部") -> 
+  levels(region)
+```
+```{r}
+dataList <- list(
+  num=c(2,97,22,15,7),
+  chr=c("2","97","22","15","7")
+)
+```
+```{r}
+map(dataList, is.numeric) -> results
+unlist(results) -> pick_numeric
+
+dataList[pick_numeric] -> num_element
+(num_element[[1]] > 50) -> pick_big
+num_element[[1]][pick_big] -> bigNumber
+```
+```{r}
+map(dataList, is.numeric) %>%
+unlist(.) %>%
+
+dataList[.] %>%
+{(.[[1]] > 50)} %>%
+num_element[[1]][.] -> bigNumber
+```
+```{r}
+# p=1.2的需求量
+p=1.2
+qd <- 10-5*p # 小心是5*p, 不能寫5p
+# p=1.3的需求量
+p=1.3
+qd <- 10-5*p
+# p=1.4的需求量
+p=1.4
+qd <- 10-5*p
+```
+```{r}
+demand <- # 創造一個物件叫demand
+  function(p){ # 定義這個物件為函數
+    q_d <- 10-5*p # 小心是5*p, 不能寫5p
+  }
+```
+```{r}
+# p=1.2的需求量
+demand(1.2) 
+# p=1.3的需求量
+demand(1.3)
+# p=1.4的需求量
+demand(1.4)
+```
+```{r}
+demand_return <- 
+  function(p){
+    q_d <- 10-5*p
+    return(q_d)
+  }
+# 印在螢幕，但Global Environment並不會有q_d
+demand_return(1.2)
+```
+```{r}
+.Last.value
+```
+```{r}
+# 要長久存在Global Environment要指定物件名稱（不要求與q_d同名）
+demand_return(1.2) -> q_d1.2
+```
+```{r}
+demand_return(1.2) # 相當於
+4
+```
+```{r}
+demand_return(1.2) -> q_d1.2 # 相當於
+4 -> q_d1.2
+```
+```{r}
+q_d <- 5
+demand_return(p=1.2)
+
+print(q_d)
+```
+```{r}
+dateInput <- today()
+locationInput <- "新北市"
+```
+```{r}
+askSilly_weather <- function(locationInput,dateInput){
+  jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+  weather_next36hours
+  
+  (weather_next36hours$cwbopendata$dataset$location$locationName == locationInput) -> pick_location
+  
+  weather_next36hours$cwbopendata$dataset$location$weatherElement[pick_location][[1]] -> weatherAtLocation
+  (weatherAtLocation$elementName=="MaxT") ->
+    pick_MaxT
+  (weatherAtLocation$elementName=="MinT") ->
+    pick_MinT
+  weatherAtLocation$time[pick_MaxT][[1]]$parameter$parameterName[[1]] -> maxT
+  weatherAtLocation$time[pick_MinT][[1]]$parameter$parameterName[[1]] -> minT
+  
+  glue::glue("{locationInput} {dateInput} 氣溫，最高{maxT}度，最低{minT}度。")
+}
+```
+```{r}
+askSilly_weather("臺中市",today())
+askSilly_weather("花蓮縣",today())
+```
+```{r}
+class(demand_return)
+```
+```{r}
+# 查詢函數formals arguments要求
+formals(askSilly_weather)
+```
+```{r}
+# 查詢函數主體
+body(askSilly_weather)
+```
+```{r}
+learning_topics <- 
+  list(
+    subject="函數",
+    date=lubridate::ymd("2020-06-03"),
+    functionsCreated=list(
+      demand=demand_return # 等號右邊是呼叫demand_return的定義值，也就是function(...){...}值定義本身。
+    )
+  )
+```
+```{r}
+learning_topics$functionsCreated$demand(1.2)
+```
+```{r}
+if(condition){
+  Body for TRUE
+}
+```
+```{r}
+# 先執行此行輸入學號
+readline(prompt = "請輸入你的學號") -> studentId 
+
+# readline一行也可改用以下取代。
+# rstudioapi::showPrompt(title="學號驗證",message="請輸入你的學號") -> studentId
+
+
+# 之後才執行以下程式
+if(
+  str_detect(studentId,'^[43](1[01][0-9]|9[0-9])[0-9]{5}$',negate=T) # condition: 是否輸入學號正確？
+) {
+  warning("你所輸入的學號不正確")
+}
+```
+```{r}
+if(!require(lubridate)){ # condition: 是否「沒安裝lubridate」？
+  install.packages("lubridate")
+}
+lubridate::ymd_hms("2020-07-01 13:00:00 GMT")
+```
+```{r}
+convert_TaiwanDate2WesternDate <- function(twDate){
+  library(stringr)
+  regex_pattern <-
+    "(?<=民國)[0-9]+(?=年)"
+  
+  # 取出民國年，計算西元年
+  year <- 
+    str_extract(
+      twDate,
+      regex_pattern)
+  westernYear <- as.integer(year)+1911
+  
+  # 替換民國xx年的xx成西元年數字
+  str_replace(
+    twDate,
+    regex_pattern,  # 要換掉的文字
+    as.character(westernYear) # 要替換的內容
+  ) -> twDate_reformat
+  
+  lubridate::ymd(twDate_reformat) -> westernDate
+  return(westernDate)
+}
+
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+convert_TaiwanDate2WesternDate(twDate)
+```
+```{r}
+convert_TaiwanDate2WesternDate <- function(twDate){
+  
+  if(!require("stringr")){
+    install.packages("stringr")
+  }
+  if(!require("lubridate")){
+    install.packages("lubridate")
+  }
+  
+  library(stringr)
+  regex_pattern <-
+    "(?<=民國)[0-9]+(?=年)"
+  
+  # 取出民國年，計算西元年
+  year <- 
+    str_extract(
+      twDate,
+      regex_pattern)
+  westernYear <- as.integer(year)+1911
+  
+  # 替換民國xx年的xx成西元年數字
+  str_replace(
+    twDate,
+    regex_pattern,  # 要換掉的文字
+    as.character(westernYear) # 要替換的內容
+  ) -> twDate_reformat
+  
+  lubridate::ymd(twDate_reformat) -> westernDate
+  return(westernDate)
+}
+```
+```{r}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
